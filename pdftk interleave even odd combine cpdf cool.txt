@@ -1,0 +1,27 @@
+￼PDF Labs
+￼How to Collate Even and Odd Scanned PDF Pages
+Shuffle the even and odd pages you get from scanning a two­sided document using PDFtk Server.
+You scanned a two­sided document by first scanning all the odd pages and then scanning all the even pages. Now you have two PDFs: one of odd pages and one of even pages. And the even pages are in reverse order! How can you collate these pages into a single, right­reading document? These instructions will show you how to do this with our command­line tool PDFtk Server.
+PDFtk Server is free (as in freedom) software that you can use to manipulate PDF documents. You can download free installers for Windows and Mac OS X from our site. Most Linux distributions maintain a "pdftk" binary package you can install.
+PDFtk has a special feature that we added specifically to solve this problem of arranging scanned pages: shuffle. Say you have two PDFs: even_pages.pdf and odd_pages.pdf. Then you can collate them into a single document like this:
+pdftk A=odd_pages.pdf B=even_pages.pdf shuffle A B output collated_pages.pdf
+If your even pages are in reverse order, you can reverse its page range:
+pdftk A=odd_pages.pdf B=even_pages.pdf shuffle A Bend­1 output collated_pages.pdf
+The shuffle feature works by taking one page at a time from each of the input page ranges and assembling them into a new PDF. You specify these ranges after the shuffle keyword, and you can have more than two ranges. Our PDFtk Server manual explains how to describe page ranges — they are very flexible.
+When using the Windows command­prompt, it helps to use drag­and­drop from the file manager: drag the input PDF file from the file manager onto the command­prompt, and its full pathname will appear at the prompt.
+Shuffling can be used for other jobs, too.
+Say you have a 1500­page PDF print job and you need to place a single­page PDF on the ‘back’ of each of these pages so that the final PDF print job is 3000 pages. First, turn the single­page ‘back’ into a 1500­page PDF. The following example isn’t the most elegant, but it illustrates the method:
+pdftk A=back_page.pdf cat A A A A A A A A A A output back_x10.pdf pdftk A=back_x10.pdf cat A A A A A A A A A A output back_x100.pdf pdftk A=back_x100.pdf cat A A A A A output back_x500.pdf
+pdftk A=back_x500.pdf cat A A A output back_x1500.pdf
+Next, collate the print job ‘fronts’ with the ‘backs’:
+pdftk A=fronts.pdf B=back_x1500.pdf shuffle A B output print_job.pdf
+If one range runs out of pages, shuffle continues collating with the remaining ranges. So in the examples above you probably want to be sure
+that the input ranges all have the same number of pages.
+Finally, sometimes you want to go the other direction and extract the even or odd pages from a PDF. You can combine them again using shuffle, later. You might do this if you wanted to apply a stamp to just the even pages of a PDF, for example.
+Extract the even pages:
+pdftk A=full_doc.pdf cat Aeven output even_pages.pdf
+Extract the odd pages:
+pdftk A=full_doc.pdf cat Aodd output odd_pages.pdf
+Article Author: Sid Steward
+Copyright © 2004–2020 Steward and Lee, LLC
+￼￼

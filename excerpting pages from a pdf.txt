@@ -1,0 +1,5 @@
+# utilizes cpdf for processing engine
+# numbers are page range. 
+# master file is in.pdf
+# automate output file before running each time
+cpdf -merge in.pdf 972-1484 -o 1964_Dec_AIM.pdf

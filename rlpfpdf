@@ -1,0 +1,39 @@
+#!/bin/bash
+
+for f in *.pdf *.PDF; do
+    if [[ -f $f ]]; then
+            # Get Page Count.
+        p="$(cpdf -info "$f" | awk '/Pages:/{print $2}')"
+            # Get file extension.
+        ext="${f##*.}"
+            # Get filename without extension.
+        fn="${f%.*}"
+            # Rename original file to "filename (original).pdf".
+            # Use '-n' to not overwrite an existing file.
+        mv -n "$f" "${fn} (original).${ext}"
+            # If page count is greater than 2, set 'p' to '3' as any
+            # PDF with more than 2 pages the command will be the same.
+        if [[ $p -gt 2 ]]; then
+            p="3"
+        fi
+        case "$p" in
+            3)
+                    # PDF file has 3 or more pages.
+                cpdf "${fn} (original).${ext}" odd  -o "$f" 
+                ;;
+            2)
+                    # PDF file has 2 pages.
+                cpdf "${fn} (original).${ext}" 1 -o "$f"
+                ;;
+            1)
+                    # PDF file has 1 page. Make a copy to the
+                    # original name for consistency of output.
+                    # Use '-n' to not overwrite an existing file.
+                cp -n "${fn} (original).${ext}" "$f"
+                ;;      
+        esac
+            # If you don't want to keep the original
+            #  file, remove '#' from the next line.
+        # rm "${fn} (original).${ext}"
+    fi
+done

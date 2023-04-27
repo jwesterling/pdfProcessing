@@ -1,0 +1,3 @@
+#watermarking 
+#overlays a pdf onto another and outputs a third. File1 is the watermark then file2 = in, f3 = out. 
+cpdf -stamp-on watermark_airfields.pdf test1.pdf -o out.pdf blah

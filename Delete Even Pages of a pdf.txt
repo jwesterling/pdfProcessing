@@ -1,0 +1,2 @@
+# to delete even pdf pages put in folder and open a terminal $rlpfpdf
+# place rlpfpdf in usr/local/bin

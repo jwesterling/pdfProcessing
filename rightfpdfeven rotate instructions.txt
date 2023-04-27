@@ -1,0 +1,26 @@
+# customize at will like this:
+# cpdf -rotateby 90 a.pdf  -o rotated.pdf
+# cpdf -rotateby 180 a.pdf even -o rotated.pdf
+# cpdf -rotateby 90 a.pdf odd -o rotated.pdf
+
+
+#!/bin/bash
+
+for f in *.pdf *.PDF; do
+    if [[ -f $f ]]; then
+            # Get file extension.
+        ext="${f##*.}"
+            # Get filename without extension.
+        fn="${f%.*}"
+            # Rename original file to "filename (original).pdf".
+            # Use '-n' to not overwrite an existing file.
+        mv -n "$f" "${fn} (original).${ext}"
+
+            # do the rotate                          
+            cpdf -rotateby 90 "${fn} (original).${ext}"  -o "$f"
+       
+            # If you don't want to keep the original
+            #  file, remove '#' from the next line.
+        # rm "${fn} (original).${ext}"
+    fi
+done
